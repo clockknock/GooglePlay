@@ -1,23 +1,17 @@
 package zhong.googleplay
 
+import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.*
 import android.widget.TextView
+import zhong.googleplay.ui.FragmentFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         // Create the adapter that will return a fragment for each of the three
@@ -51,13 +46,20 @@ class MainActivity : AppCompatActivity() {
         mViewPager!!.adapter = mSectionsPagerAdapter
 
         val tabLayout = findViewById(R.id.tabs) as TabLayout
+        tabLayout.tabMode = TabLayout.MODE_SCROLLABLE
+//        tabLayout.setSelectedTabIndicatorColor(Color.MAGENTA)
+//        tabLayout.setSelectedTabIndicatorHeight(18)
+
+
         tabLayout.setupWithViewPager(mViewPager)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+
+        //fab
+        /* val fab = findViewById(R.id.fab) as FloatingActionButton
+         fab.setOnClickListener { view ->
+             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                     .setAction("Action", null).show()
+         }*/
 
     }
 
@@ -82,9 +84,37 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
+
     /**
-     * A placeholder fragment containing a simple view.
+     * A [FragmentPagerAdapter] that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
      */
+    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+        val titles:Array<String>?=resources.getStringArray(R.array.titles)
+
+        override fun getItem(position: Int): Fragment {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+
+            val homeFragment =FragmentFactory.getFragment(position)
+            return homeFragment
+//            return PlaceholderFragment.newInstance(position + 1)
+        }
+
+        override fun getCount(): Int {
+            return titles?.size ?: 0
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+         return titles?.get(position)
+
+        }
+    }
+
+ /*   *//**
+     * A placeholder fragment containing a simple view.
+     *//*
     class PlaceholderFragment : Fragment() {
 
         override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -96,16 +126,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         companion object {
-            /**
+            *//**
              * The fragment argument representing the section number for this
              * fragment.
-             */
+             *//*
             private val ARG_SECTION_NUMBER = "section_number"
 
-            /**
+            *//**
              * Returns a new instance of this fragment for the given section
              * number.
-             */
+             *//*
             fun newInstance(sectionNumber: Int): PlaceholderFragment {
                 val fragment = PlaceholderFragment()
                 val args = Bundle()
@@ -114,32 +144,5 @@ class MainActivity : AppCompatActivity() {
                 return fragment
             }
         }
-    }
-
-    /**
-     * A [FragmentPagerAdapter] that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        override fun getItem(position: Int): Fragment {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1)
-        }
-
-        override fun getCount(): Int {
-            // Show 3 total pages.
-            return 3
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            when (position) {
-                0 -> return "SECTION 1"
-                1 -> return "SECTION 2"
-                2 -> return "SECTION 3"
-            }
-            return null
-        }
-    }
+    }*/
 }
